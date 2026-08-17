@@ -1,13 +1,5 @@
 class Solution {
 public:
-    bool eq(vector<int> &vs, vector<int> &vt)
-    {
-        for(int i=0;i<vs.size();i++)
-        {
-            if(vs[i]<vt[i]) return false;
-        }
-        return true;
-    }
     string minWindow(string s, string t) {
         vector<int> vs(128,0);
         vector<int> vt(128,0);
@@ -27,7 +19,12 @@ public:
         while(high<s.size())
         {
             vs[s[high]]++;
-            while(eq(vs,vt))
+            int eq=true;
+            for(int i=0;i<vs.size();i++)
+            {
+                if(vs[i]<vt[i]) eq=false;
+            }
+            while(eq)
             {
                 if(high-low+1<min)
                 {
@@ -36,6 +33,11 @@ public:
                 }
                 low++;
                 vs[s[low-1]]--;
+                eq=true;
+                for(int i=0;i<vs.size();i++)
+                {
+                    if(vs[i]<vt[i]) eq=false;
+                }
             }
             high++;
         }
