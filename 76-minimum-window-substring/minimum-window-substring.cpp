@@ -3,9 +3,18 @@ public:
     string minWindow(string s, string t) {
         vector<int> vs(128,0);
         vector<int> vt(128,0);
+        int formed=0;
+        int required=0;
         for(int i=0;i<t.size();i++)
         {
             vt[t[i]]++;
+        }
+        for(int i=0;i<vt.size();i++)
+        {
+            if(vt[i])
+            {
+                required++;
+            }
         }
         string res="";
         int start=-1;
@@ -19,12 +28,8 @@ public:
         while(high<s.size())
         {
             vs[s[high]]++;
-            int eq=true;
-            for(int i=0;i<vs.size();i++)
-            {
-                if(vs[i]<vt[i]) eq=false;
-            }
-            while(eq)
+            if(vt[s[high]] && vs[s[high]]==vt[s[high]]) formed++;
+            while(required==formed)
             {
                 if(high-low+1<min)
                 {
@@ -33,11 +38,7 @@ public:
                 }
                 low++;
                 vs[s[low-1]]--;
-                eq=true;
-                for(int i=0;i<vs.size();i++)
-                {
-                    if(vs[i]<vt[i]) eq=false;
-                }
+                if(vt[s[low-1]] && vs[s[low-1]]<vt[s[low-1]]) formed--;
             }
             high++;
         }
